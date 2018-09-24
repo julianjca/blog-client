@@ -5,6 +5,10 @@
     <p>{{ blog.body }}</p>
     <h3 v-if="userId===blog.user._id" @click="removeBlog(blog._id)" id="remove">delete</h3>
     <h3 v-if="userId===blog.user._id" id="update" @click="toUpdatePage">update</h3>
+    <div class="socmedbutton">
+      <a :href="shareUrl" class="twitter-share-button" data-show-count="false"><img src="http://goinkscape.com/wp-content/uploads/2015/07/twitter-logo-final.png"></a>
+      <div class="fb-share-button" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a target="_blank" :href="fbUrl" class="fb-xfbml-parse-ignore"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2000px-F_icon.svg.png"></a></div>
+      </div>
   </div>
 </template>
 
@@ -16,7 +20,9 @@ export default {
   data () {
     return {
       id: this.blog._id,
-      idUser: ''
+      idUser: '',
+      shareUrl: '',
+      fbUrl: ''
     }
   },
   methods: {
@@ -30,7 +36,7 @@ export default {
       let self = this
       axios({
         method: 'delete',
-        url: `http://localhost:3000/articles/${id}`,
+        url: `http://35.240.195.45/articles/${id}`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -49,6 +55,14 @@ export default {
     userId () {
       this.idUser = this.userId
     }
+  },
+  created () {
+    this.shareUrl = `https://twitter.com/intent/tweet?text=http://blog1.juliananderson.xyz/blog/${
+      this.blog._id
+    }`
+    this.fbUrl = `https://www.facebook.com/sharer/sharer.php?u=http://blog1.juliananderson.xyz/blog/${
+      this.blog._id
+    }`
   }
 }
 </script>
@@ -89,5 +103,16 @@ h2 {
   cursor: pointer;
   color: white;
   background-color: red;
+}
+
+.socmedbutton {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.socmedbutton img {
+  width: 30px;
+  height: auto;
+  margin-left: 20px;
 }
 </style>
